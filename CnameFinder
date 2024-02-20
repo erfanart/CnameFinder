@@ -1,0 +1,26 @@
+#!/bin/bash
+if [ ! $# -eq 2 ];then
+    read -p "enter your domain: " domain
+    read -p "enter yout wordlist: " wordlist
+    subdomainList=`cat "$wordlist"`
+    for sub in subdomainList
+    do 
+     cmd=`dig $sub.$domain cname +short`
+        if [ ${#cmd} != 0 ];then
+            echo $cmd
+        fi
+    done 
+    echo $# #the number of input args
+
+elif [ $# -eq 2 ];then
+   domain=$1
+   subdomainList=`cat "$2"`
+    for line in $subdomainList
+    do
+        cmd=`dig $line.$domain cname +short`
+        if [ ${#cmd} != 0 ];then 
+            echo "[+][$line][$cmd]"
+
+        fi
+    done     
+fi
